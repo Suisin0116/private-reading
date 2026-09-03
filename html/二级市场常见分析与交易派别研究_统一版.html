@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="二级市场常见分析与交易派别研究：基本面、技术量价、资金流、事件情绪与量化套利。">
+  <title>二级市场常见分析与交易派别研究</title>
+  <style>
+    :root {
+      --navy:#004685; --blue:#056dae; --cyan:#00a8e0; --red:#e31837;
+      --ink:#152b3c; --muted:#62798a; --paper:#fff; --wash:#eef7fc;
+      --line:#cfe3ef; --shadow:0 18px 55px rgba(0,70,133,.12);
+      --radius:20px; --max:1180px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth;scroll-padding-top:96px}
+    body{margin:0;background:#f6fafc;color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.75}
+    a{color:inherit;text-decoration:none} button{font:inherit}
+    .progress{position:fixed;inset:0 0 auto;z-index:100;height:4px;background:transparent}
+    .progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--red),var(--cyan));transition:width .08s linear}
+    .topbar{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(207,227,239,.8)}
+    .topbar-inner{max-width:var(--max);margin:auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;color:var(--navy);white-space:nowrap}
+    .mark{width:34px;height:25px;position:relative;border-bottom:5px solid var(--red);border-radius:0 0 50% 50%}
+    .mark:before{content:"";position:absolute;left:5px;right:5px;top:4px;height:7px;border-top:4px solid var(--blue);border-radius:50%}
+    nav{display:flex;gap:6px;overflow:auto;scrollbar-width:none;margin-left:auto}
+    nav a{padding:7px 11px;border-radius:999px;color:var(--muted);font-size:13px;white-space:nowrap;transition:.2s}
+    nav a:hover,nav a.active{color:var(--navy);background:var(--wash)}
+    .hero{background:linear-gradient(130deg,#003b73 0%,var(--navy) 52%,#087bb6 100%);color:#fff;position:relative;overflow:hidden}
+    .hero:before,.hero:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.16)}
+    .hero:before{width:520px;height:520px;right:-190px;top:-260px}.hero:after{width:330px;height:330px;right:100px;bottom:-260px}
+    .hero-inner{max-width:var(--max);margin:auto;padding:92px 24px 86px;position:relative}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border:1px solid rgba(255,255,255,.32);border-radius:999px;font-size:13px;color:#d9f3ff}
+    .eyebrow:before{content:"";width:7px;height:7px;background:var(--red);border-radius:50%}
+    h1{font-size:clamp(36px,5vw,66px);line-height:1.12;letter-spacing:-2px;max-width:900px;margin:25px 0 20px}
+    .hero p{max-width:760px;font-size:18px;color:#d7ecf8;margin:0}
+    .meta{display:flex;gap:20px;margin-top:35px;color:#aedadf;font-size:13px;flex-wrap:wrap}
+    main{max-width:var(--max);margin:-42px auto 0;padding:0 24px 80px;position:relative}
+    .summary{background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);padding:34px;border-top:5px solid var(--red)}
+    .summary-grid{display:grid;grid-template-columns:1.05fr 1.95fr;gap:34px;align-items:start}
+    .big-note{font-size:23px;font-weight:800;line-height:1.55;color:var(--navy);margin:0}
+    .big-note em{font-style:normal;color:var(--red)}
+    .key-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .key{background:var(--wash);padding:15px 16px;border-radius:12px;font-size:14px;border:1px solid transparent}
+    .key b{display:block;color:var(--blue);margin-bottom:2px}.key:hover{border-color:#9ad9ee}
+    section{margin-top:72px}.section-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:26px}
+    .num{font:800 14px/1 system-ui;color:#fff;background:var(--red);padding:11px 10px;border-radius:9px;box-shadow:0 8px 18px rgba(227,24,55,.2)}
+    h2{font-size:clamp(27px,3vw,40px);line-height:1.2;margin:0;color:var(--navy);letter-spacing:-1px}
+    .section-head p{margin:8px 0 0;color:var(--muted)}
+    h3{color:var(--blue);font-size:20px;margin:28px 0 12px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:0 10px 35px rgba(0,70,133,.06)}
+    .quote{background:var(--wash);border-top:2px solid #8bd8f2;padding:18px 22px;color:var(--navy);font-weight:700;margin:20px 0;border-radius:0 0 10px 10px}
+    .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:28px 0}
+    .card{min-height:160px;padding:23px 18px;border-radius:16px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 14px 30px rgba(0,70,133,.12);transition:transform .2s,box-shadow .2s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 18px 35px rgba(0,70,133,.18)}
+    .card:nth-child(1){background:#004685}.card:nth-child(2){background:#0577b9}.card:nth-child(3){background:#00a8e0}.card:nth-child(4){background:#5798b7}.card:nth-child(5){background:#e31837}
+    .card small{opacity:.8}.card strong{font-size:21px}.card span{font-size:13px;opacity:.92}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .mini{background:#fff;border:1px solid var(--line);border-radius:15px;padding:21px}.mini strong{display:block;color:var(--blue);font-size:17px;margin-bottom:8px}.mini p{margin:0;color:#405a6c;font-size:14px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+    table{width:100%;border-collapse:collapse;min-width:720px;font-size:14px}
+    th{background:var(--navy);color:#fff;text-align:left;padding:12px 14px;font-weight:700}td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr:nth-child(even){background:#f5f9fb}tbody tr:hover{background:#eaf6fb}
+    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:30px;margin:34px 0 16px;counter-reset:step}
+    .step{position:relative;text-align:center;counter-increment:step}.step:before{content:counter(step);display:grid;place-items:center;width:70px;height:70px;margin:0 auto 12px;border-radius:50%;color:#fff;background:var(--blue);font-size:24px;font-weight:800;box-shadow:0 10px 25px rgba(5,109,174,.2)}
+    .step:nth-child(3):before{background:var(--cyan)}.step:nth-child(5):before{background:var(--red)}
+    .step:not(:last-child):after{content:"";position:absolute;top:34px;left:calc(50% + 45px);width:calc(100% - 60px);height:2px;background:var(--line)}
+    .step b{color:var(--navy)}.step small{display:block;color:var(--muted);margin-top:3px}
+    .cycle{display:flex;gap:8px;align-items:center;overflow:auto;padding:5px 0 10px}
+    .cycle span{white-space:nowrap;background:var(--wash);color:var(--blue);border:1px solid var(--line);padding:9px 14px;border-radius:999px;font-weight:700}.cycle i{font-style:normal;color:var(--red)}
+    .formula{font-size:22px;text-align:center;color:var(--navy);font-weight:800;padding:21px;background:linear-gradient(90deg,var(--wash),#fff,var(--wash));border-radius:15px}
+    .checklist{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.check{border-top:4px solid var(--blue);padding:17px;background:#fff;border-radius:10px;box-shadow:0 8px 25px rgba(0,70,133,.07)}.check:last-child{border-color:var(--red)}.check b{color:var(--navy)}.check p{font-size:13px;color:var(--muted);margin:8px 0 0}
+    .closing{margin-top:74px;padding:45px;background:linear-gradient(130deg,var(--navy),#0577b9);color:#fff;border-radius:24px;position:relative;overflow:hidden}.closing:after{content:"";position:absolute;width:260px;height:260px;border:50px solid rgba(255,255,255,.07);border-radius:50%;right:-110px;bottom:-150px}.closing h2{color:#fff}.closing p{color:#d7edf8;max-width:850px}.closing strong{color:#fff;font-size:24px}
+    footer{max-width:var(--max);margin:auto;padding:30px 24px 50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+    .back{position:fixed;right:22px;bottom:22px;width:44px;height:44px;border:0;border-radius:50%;background:var(--red);color:#fff;cursor:pointer;box-shadow:0 10px 25px rgba(227,24,55,.25);opacity:0;pointer-events:none;transition:.2s}.back.show{opacity:1;pointer-events:auto}
+    @media(max-width:900px){nav{display:none}.summary-grid,.two{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.three{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.step{text-align:left;padding-left:90px;min-height:72px}.step:before{position:absolute;left:0}.step:not(:last-child):after{left:34px;top:72px;width:2px;height:28px}.checklist{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.hero-inner{padding-top:64px}.summary{padding:22px}.key-list,.cards,.checklist{grid-template-columns:1fr}h1{letter-spacing:-1px}.panel{padding:20px}.closing{padding:30px 24px}}
+    @media print{.topbar,.progress,.back{display:none!important}body{background:#fff}.hero{print-color-adjust:exact;-webkit-print-color-adjust:exact}.hero-inner{padding:50px 24px}main{margin:0}.panel,.summary{box-shadow:none}section{break-inside:avoid}.card,th,.closing{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+
+    /* 与知识库其余页面统一的编辑排版 */
+    :root{--navy:#173d52;--blue:#26736d;--cyan:#5f9188;--red:#ba8950;--ink:#14212b;--muted:#6f756f;--paper:#fffdf8;--wash:#e8eee9;--line:#d9d2c5;--shadow:0 15px 40px rgba(38,48,45,.06);--radius:4px;--max:1180px}
+    body{background:#f4f0e8;line-height:1.85}.progress span{background:linear-gradient(90deg,#ba8950,#26736d)}
+    .topbar{background:rgba(244,240,232,.94);border-color:var(--line)}.brand{color:var(--navy)}.mark{border-bottom-color:#ba8950}.mark:before{border-top-color:#26736d}nav a:hover,nav a.active{color:#26736d;background:var(--wash)}
+    .hero{background:transparent;color:var(--ink)}.hero:before,.hero:after{display:none}.hero-inner{padding:58px 24px 36px;border-top:7px solid var(--navy);border-bottom:1px solid var(--line)}
+    .eyebrow{padding:0;border:0;border-radius:0;color:#26736d;font-size:12px;letter-spacing:.18em;font-weight:700;text-transform:uppercase}.eyebrow:before{display:none}
+    h1{font-family:"Songti SC","SimSun",serif;color:var(--navy);font-size:clamp(34px,6vw,68px);line-height:1.08;letter-spacing:-1px;margin:15px 0 18px}.hero p{color:#4d595d;font-size:18px}.meta{color:var(--muted);margin-top:22px}main{margin:0 auto;padding-top:32px}
+    .summary{border:1px solid var(--line);border-top:4px solid #ba8950;border-radius:4px;box-shadow:var(--shadow);background:var(--paper)}.big-note{font-family:"Songti SC","SimSun",serif;color:var(--navy)}.big-note em{color:#8d433c}.key{background:var(--wash);border-radius:4px}.key b{color:#26736d}
+    .cards{gap:14px}.card,.card:nth-child(n){min-height:150px;color:var(--ink);background:#fff;border:1px solid var(--line);border-top:4px solid #26736d;border-radius:4px;box-shadow:none}.card:nth-child(3),.card:nth-child(5){border-top-color:#ba8950}.card small{color:var(--muted);opacity:1}.card strong{color:var(--navy)}.card span{color:#4d595d;opacity:1}
+    section{margin-top:58px}.num{background:#ba8950;border-radius:3px;box-shadow:none}h2{font-family:"Songti SC","SimSun",serif;color:var(--navy)}h3{color:#26736d}.panel,.mini{background:var(--paper);border-color:var(--line);border-radius:4px;box-shadow:var(--shadow)}.mini strong{color:var(--navy)}
+    .quote{background:var(--wash);border:0;border-left:4px solid #26736d;border-radius:0;color:var(--navy);font-family:"Songti SC","SimSun",serif;font-size:18px;font-weight:400}.table-wrap{border-color:var(--line);border-radius:4px;background:var(--paper)}th{background:#edf1ee;color:var(--navy)}td{border-color:var(--line)}tbody tr:nth-child(even){background:#faf8f2}tbody tr:hover{background:#f1eee5}
+    .formula{background:#fff8ea;color:var(--navy);border-left:4px solid #ba8950;border-radius:0}.cycle span{background:var(--wash);color:#26736d;border-color:var(--line);border-radius:20px}.cycle i{color:#ba8950}.step:before,.step:nth-child(3):before,.step:nth-child(5):before{background:var(--navy);box-shadow:none}.step:nth-child(3):before{background:#26736d}.step:nth-child(5):before{background:#ba8950}
+    .check{border-color:#26736d;border-radius:4px;background:var(--paper);box-shadow:var(--shadow)}.check:last-child{border-color:#ba8950}.closing{background:var(--navy);border-radius:4px}.back{background:var(--navy);box-shadow:none}@media(max-width:560px){.hero-inner{padding:38px 18px 26px}.hero p{font-size:16px}main{padding-left:16px;padding-right:16px}.summary,.panel{padding:22px 18px}}
+  </style>
+</head>
+<body>
+  <div class="progress"><span id="progress"></span></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span><span>金融工程专题研究</span></a>
+      <nav aria-label="章节导航">
+        <a href="#framework">框架</a><a href="#fundamental">基本面</a><a href="#technical">量价</a><a href="#flow">资金流</a><a href="#event">事件情绪</a><a href="#quant">量化套利</a><a href="#integration">综合应用</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero" id="top">
+    <div class="hero-inner">
+      <span class="eyebrow">投资方法论系列</span>
+      <h1>二级市场常见分析<br>与交易派别研究</h1>
+      <p>从价值定价到系统化交易：用五维框架理解不同方法的研究对象、收益来源、适用周期与风险边界。</p>
+      <div class="meta"><span>金融工程专题研究</span><span>2026年8月31日</span><span>方法论研究 · 非投资建议</span></div>
+    </div>
+  </div>
+
+  <main>
+    <article class="summary" id="framework">
+      <div class="summary-grid">
+        <p class="big-note">五类方法并非互相排斥的“门派”，而是分别解决<em>价值、催化、资金、时点与执行</em>问题的互补工具。</p>
+        <div class="key-list">
+          <div class="key"><b>基本面决定方向</b>研究盈利趋势、竞争优势和估值中枢。</div>
+          <div class="key"><b>事件情绪寻找催化</b>识别预期差与风险偏好的阶段性变化。</div>
+          <div class="key"><b>资金流完成验证</b>观察边际定价力量及其持续性。</div>
+          <div class="key"><b>量价与量化负责执行</b>选择时点、定义失效条件并管理组合风险。</div>
+        </div>
+      </div>
+    </article>
+
+    <div class="cards" aria-label="五类分析方法概览">
+      <div class="card"><small>01 · 价值中枢</small><strong>基本面</strong><span>企业、行业与宏观</span></div>
+      <div class="card"><small>02 · 交易时点</small><strong>技术量价</strong><span>价格、成交与波动</span></div>
+      <div class="card"><small>03 · 边际力量</small><strong>资金流</strong><span>持仓、交易与流动性</span></div>
+      <div class="card"><small>04 · 预期变化</small><strong>事件情绪</strong><span>催化、分歧与风险偏好</span></div>
+      <div class="card"><small>05 · 系统执行</small><strong>量化套利</strong><span>模型、组合与相对定价</span></div>
+    </div>
+
+    <section id="fundamental">
+      <div class="section-head"><span class="num">01</span><div><h2>基本面派</h2><p>判断资产长期价值与盈利趋势</p></div></div>
+      <div class="panel">
+        <p>基本面研究认为，股票代表对企业未来现金流的索取权。价格短期可能偏离价值，但长期仍受盈利能力、现金流和资本回报约束。</p>
+        <div class="formula">投资回报 ≈ 盈利增长 + 股息回报 + 估值变化</div>
+        <h3>宏观—行业—公司三层框架</h3>
+        <div class="three">
+          <div class="mini"><strong>宏观层</strong><p>增长、通胀、利率、信用与汇率，决定贴现率和整体风险偏好。</p></div>
+          <div class="mini"><strong>行业层</strong><p>供需、库存、竞争、周期与政策，识别景气方向和结构性机会。</p></div>
+          <div class="mini"><strong>公司层</strong><p>商业模式、护城河、治理与财务，估计内在价值与安全边际。</p></div>
+        </div>
+        <h3>四类典型风格</h3>
+        <div class="two">
+          <div class="mini"><strong>价值 × 质量</strong><p>价值投资强调价格低于内在价值；质量投资偏好高资本回报、强现金流和低财务风险。</p></div>
+          <div class="mini"><strong>成长 × 景气</strong><p>成长投资关注长期扩张；景气投资关注供需、价格和盈利预期的边际改善。</p></div>
+        </div>
+        <div class="quote">优势在于逻辑清晰、容量较大；局限在于预测误差、数据滞后、价值陷阱以及价值兑现时间不确定。</div>
+      </div>
+    </section>
+
+    <section id="technical">
+      <div class="section-head"><span class="num">02</span><div><h2>技术量价派</h2><p>从交易结果识别趋势、强度与买卖时点</p></div></div>
+      <div class="panel">
+        <p>价格表示多空交易结果，成交量表示参与度与分歧，波动率表示不确定性和风险状态。技术分析关注“市场正在如何定价”，而非直接估计内在价值。</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>量价状态</th><th>常见解释</th><th>需要警惕</th></tr></thead>
+          <tbody>
+            <tr><td>价涨量增</td><td>买方参与度提高，趋势获得一定确认</td><td>高位巨量可能意味着分歧与派发</td></tr>
+            <tr><td>价涨量缩</td><td>抛压较轻，但增量资金相对不足</td><td>上涨持续性可能下降</td></tr>
+            <tr><td>价跌量增</td><td>卖方压力增加，分歧和风险释放</td><td>极端放量也可能接近恐慌出清</td></tr>
+            <tr><td>价跌量缩</td><td>主动卖出意愿减弱</td><td>缩量不能单独证明市场见底</td></tr>
+          </tbody>
+        </table></div>
+        <h3>三类主要策略</h3>
+        <div class="three">
+          <div class="mini"><strong>趋势跟随</strong><p>利用价格惯性，以均线、动量和相对强度建立及退出仓位。</p></div>
+          <div class="mini"><strong>突破交易</strong><p>观察平台、箱体和前期高低点，警惕假突破与流动性不足。</p></div>
+          <div class="mini"><strong>均值回归</strong><p>交易过度偏离后的修复，在强单边趋势中容易连续失效。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="section-head"><span class="num">03</span><div><h2>资金流派</h2><p>识别边际定价者、筹码结构与资金持续性</p></div></div>
+      <div class="panel">
+        <div class="quote">每笔成交都同时包含买方和卖方。“资金净流入”通常依据主动买卖方向、持仓变化或申购赎回估计，并不等同于成交额增加。</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>层面</th><th>关注资金</th><th>常用观测</th><th>主要用途</th></tr></thead>
+          <tbody>
+            <tr><td>全市场</td><td>配置、杠杆与新增资金</td><td>成交额、换手、融资余额、新发基金</td><td>判断增量或存量博弈</td></tr>
+            <tr><td>行业</td><td>ETF、公募、保险与私募</td><td>ETF份额、行业成交占比、机构持仓</td><td>识别主线与轮动</td></tr>
+            <tr><td>个股</td><td>机构、产业资本与短线资金</td><td>股东户数、龙虎榜、大宗交易、增减持</td><td>分析筹码集中与拥挤度</td></tr>
+          </tbody>
+        </table></div>
+        <h3>典型资金轮动链条</h3>
+        <div class="cycle"><span>低关注度布局</span><i>→</i><span>催化出现</span><i>→</i><span>资金集中流入</span><i>→</i><span>趋势强化</span><i>→</i><span>交易拥挤</span><i>→</i><span>分流或退出</span></div>
+        <p>解读时应区分长期配置与短期交易资金、实时指标与滞后披露指标，并警惕将“大单”机械等同于“机构看多”。</p>
+      </div>
+    </section>
+
+    <section id="event">
+      <div class="section-head"><span class="num">04</span><div><h2>事件与情绪派</h2><p>捕捉信息冲击、预期差与风险偏好的阶段性变化</p></div></div>
+      <div class="panel">
+        <div class="formula">预期差 = 实际结果 − 市场预期</div>
+        <p>事件的市场影响并不由“利好”或“利空”的表面标签决定。例如利润增长30%可能是利空，如果市场事前已经预期增长50%。</p>
+        <div class="three">
+          <div class="mini"><strong>公司事件</strong><p>财报、回购、并购、订单、分红与股权激励，改变盈利预测、估值或股份供给。</p></div>
+          <div class="mini"><strong>行业事件</strong><p>产业政策、产品涨价、产能投放和技术变迁，改变行业供需与竞争格局。</p></div>
+          <div class="mini"><strong>交易结构</strong><p>指数调仓、限售解禁、ETF纳入和衍生品到期，改变短期供求与对冲需求。</p></div>
+        </div>
+        <h3>情绪周期</h3>
+        <div class="cycle"><span>冰点</span><i>→</i><span>修复</span><i>→</i><span>发酵</span><i>→</i><span>高潮</span><i>→</i><span>分歧</span><i>→</i><span>退潮</span></div>
+        <p>情绪周期适合描述短期风险偏好，并非固定顺序。高潮阶段趋势有利但拥挤度上升，分歧和退潮阶段需要强化退出约束。</p>
+      </div>
+    </section>
+
+    <section id="quant">
+      <div class="section-head"><span class="num">05</span><div><h2>量化与套利派</h2><p>把投资逻辑转化为可检验、可组合、可执行的规则</p></div></div>
+      <div class="panel">
+        <p>量化不是单一信息源，而是一种研究与执行方式。基本面、量价、资金与情绪都可以被转化为因子；模型的价值在于可检验、可复制和可执行。</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>策略</th><th>收益逻辑</th><th>常用数据</th><th>核心风险</th></tr></thead>
+          <tbody>
+            <tr><td>多因子选股</td><td>获取价值、质量、动量等风险溢价</td><td>财务、行情、预期、持仓</td><td>因子拥挤、风格逆风、暴露失控</td></tr>
+            <tr><td>趋势 / CTA</td><td>捕捉跨资产、跨周期的价格持续性</td><td>价格、波动率、持仓</td><td>震荡止损与趋势反转</td></tr>
+            <tr><td>统计套利</td><td>交易相关资产之间的短期偏离</td><td>价差、协整、订单流</td><td>关系断裂、基差扩大、流动性</td></tr>
+            <tr><td>市场中性</td><td>做多高预期收益、做空低预期收益组合</td><td>多因子、风险模型、融券</td><td>对冲不完全、融券约束、尾部风险</td></tr>
+          </tbody>
+        </table></div>
+        <div class="quote">现实中的多数“套利”属于相对价值交易，并非无风险。策略评价应同时考虑收益、回撤、交易成本、容量和样本外稳定性。</div>
+      </div>
+    </section>
+
+    <section id="integration">
+      <div class="section-head"><span class="num">→</span><div><h2>五维融合应用</h2><p>从“派别选择”走向“问题导向”的组合研究体系</p></div></div>
+      <div class="flow">
+        <div class="step"><b>基本面</b><small>选择什么</small></div>
+        <div class="step"><b>事件情绪</b><small>为何重估</small></div>
+        <div class="step"><b>资金流</b><small>谁在推动</small></div>
+        <div class="step"><b>技术量价</b><small>何时交易</small></div>
+        <div class="step"><b>量化套利</b><small>如何执行</small></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>环节</th><th>核心问题</th><th>研究输出</th></tr></thead>
+        <tbody>
+          <tr><td>标的筛选</td><td>盈利趋势、竞争优势与估值是否匹配</td><td>投资池与价值区间</td></tr>
+          <tr><td>催化识别</td><td>什么变化可能促使市场修正预期</td><td>事件清单与情景假设</td></tr>
+          <tr><td>市场验证</td><td>是否有持续的边际资金认可</td><td>资金强度与拥挤度</td></tr>
+          <tr><td>交易择时</td><td>趋势是否形成、失效点在哪里</td><td>入场、加仓、止损与退出</td></tr>
+          <tr><td>组合实施</td><td>规则是否有效、风险如何分散</td><td>权重、风险预算与监控</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>五维研究检查清单</h3>
+      <div class="checklist">
+        <div class="check"><b>基本面</b><p>盈利改善来自周期、成长还是会计口径？</p></div>
+        <div class="check"><b>事件情绪</b><p>催化是否真正超过市场已有预期？</p></div>
+        <div class="check"><b>资金流</b><p>增量资金的属性和持续性如何？</p></div>
+        <div class="check"><b>技术量价</b><p>位置、趋势和成交量是否相互配合？</p></div>
+        <div class="check"><b>量化风控</b><p>仓位、回撤和组合暴露是否可承受？</p></div>
+      </div>
+    </section>
+
+    <aside class="closing">
+      <h2>结论与投资启示</h2>
+      <p>成熟的投资体系不在于找到唯一正确的派别，而在于明确各方法的适用边界，并建立从标的选择、预期判断、信号确认到风险控制的完整链条。</p>
+      <strong>价值有依据，上涨有催化，交易有资金，入场有信号，组合有风控。</strong>
+    </aside>
+  </main>
+
+  <footer>
+    <b>风险提示：</b>历史规律不代表未来表现；宏观环境、行业景气与公司盈利可能低于预期；资金与持仓数据可能滞后；技术信号可能失效；事件影响可能已被提前反映；量化模型存在过拟合、成本低估和市场结构变化风险。本文仅作方法论研究，不构成投资建议。
+  </footer>
+  <button class="back" id="back" aria-label="返回顶部">↑</button>
+  <script>
+    const progress=document.querySelector('#progress'), back=document.querySelector('#back');
+    const links=[...document.querySelectorAll('nav a')];
+    const sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    function update(){
+      const max=document.documentElement.scrollHeight-innerHeight;
+      progress.style.width=(max?scrollY/max*100:0)+'%';
+      back.classList.toggle('show',scrollY>650);
+      let current=''; sections.forEach(s=>{if(s.getBoundingClientRect().top<150)current='#'+s.id});
+      links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===current));
+    }
+    addEventListener('scroll',update,{passive:true}); update();
+    back.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+  </script>
+</body>
+</html>
